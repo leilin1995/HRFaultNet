@@ -1,0 +1,7 @@
+Pixel_Accuracy:0.936
+Mean_Pixel_Accuracy:0.762
+Precision_rate0.542
+Recall_rate:0.715
+IOU:0.445
+Dice:0.616
+F1_score:0.616
