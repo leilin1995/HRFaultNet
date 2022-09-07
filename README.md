@@ -14,7 +14,7 @@ Fig. a and b display the original seismic data and the corresponding FaultNet pr
 All training and test code are in the directory **FaultSegmentation/code** and **ImproveResolution/code**. And the code for field data application and plotting is in the in the directory **Application/Real**.
 
 ## Dataset
-The synthetic seismic data used for training can be obtained by visting the "".
+The synthetic seismic data used for training can be obtained by visting the "https://lcl777-my.sharepoint.com/personal/leilin_lcl777_onmicrosoft_com/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fleilin%5Flcl777%5Fonmicrosoft%5Fcom%2FDocuments%2FDataset%5Ffault%2Fdata%2Ezip&parent=%2Fpersonal%2Fleilin%5Flcl777%5Fonmicrosoft%5Fcom%2FDocuments%2FDataset%5Ffault&ga=1" and "https://lcl777-my.sharepoint.com/:u:/g/personal/leilin_lcl777_onmicrosoft_com/EduHxfqcXYRNrbwfxRvxL7kB1IUNEEeb0NMjv9cUL1OJaA?e=cohggV".
 
 
 
@@ -32,7 +32,7 @@ The synthetic seismic data used for training can be obtained by visting the "".
 * matplotlib 3.3.4
 
 ## Usage instructions
-You can use this method following the example in the application.
+You can use this method by following the example in the application.
 
 ## Citation
 
