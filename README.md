@@ -1,5 +1,5 @@
 # HRFaultNet
-High-resolution automatic fault identification method. This is a repository for the paper "HRFaultNet: High-resolution Fault Recognition Using Deep Learning" (submit to TGRS).
+High-resolution automatic fault identification method. This is a repository for the paper "What can deep learning-based resolution-improved seismic data do? A case study of faults identification".
 
 ## Workflow
 An end-to-end workflow for automatic high-resolution fault identification. The original seismic image (a) is fed to the well-trained HRNet to acquire the high-resolution seismic image (b). Then, the well-trained FaultNet obtains the high-resolution fault identification results (c) from the enhanced seismic image.
