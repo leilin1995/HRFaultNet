@@ -7,7 +7,7 @@ An end-to-end workflow for automatic high-resolution fault identification. The o
 
 ## Example
 Fig. a and b display the original seismic data and the corresponding FaultNet predicted fault probability map. Fig. c presents the high-resolution random noise-suppressed seismic image acquired by HRNet from Fig. a. Fig. d shows the FaultNet predicted fault image from Fig. c. Our workflow provides cleaner and sharper fault probability maps than feeding raw seismic data directly into FaultNet. In addition, there is less noise near the fault lines predicted by our method.
-![image](https://github.com/leilin1995/HRFaultNet/blob/master/Application/Real/F3/compare.png)
+![image](https://github.com/leilin1995/HRFaultNet/K3_application.png)
 
 
 ## Code
