@@ -12,6 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib.gridspec import GridSpec
+import time
 
 
 mpl.rcParams['font.sans-serif'] = ['Times New Roman']  # font type
@@ -19,38 +20,59 @@ mpl.rcParams['axes.unicode_minus'] = False
 
 def main():
     UPSCALE_FACTOR = 2
-    raw_data=read_h5("./seismic_slice.h5")
+    raw_data = read_h5("./seismic_slice.h5")
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
     # load HRNet
-    hr_checkpoint="../../../ImproveResolution/result/SRF_2/model/netG_bestmodel.pth"
+    hr_checkpoint = "../../../ImproveResolution/result/SRF_2/model/netG_bestmodel.pth"
     hr_model = Generator(scale_factor=UPSCALE_FACTOR).eval()
     hr_model.load_state_dict(torch.load(hr_checkpoint, map_location=device))
     # load FaultNet
-    fault_checkpoint="../../../FaultSegmentation/result_systhetic_2D/best_model.pth"
-    fault_model=Unet()
+    fault_checkpoint = "../../../FaultSegmentation/result_systhetic_2D/best_model.pth"
+    fault_model = Unet()
     loader = torch.load(fault_checkpoint, map_location=device)
     fault_model.load_state_dict(loader["model_state_dict"])
     with torch.no_grad():
         # 1. normalized raw data and conver to tensor
-        raw_data=normal(raw_data)
-        raw_data=torch.from_numpy(raw_data).type(torch.FloatTensor)
+        raw_data = normal(raw_data).T
+        raw_data = torch.from_numpy(raw_data).type(torch.FloatTensor)
+
+        # 开始记录超分辨率用时
+        start_time_sr = time.time()
+
         # 2. get hr data from raw data
-        input_hr=torch.unsqueeze(raw_data,dim=0)    # add channel dim
-        input_hr=torch.unsqueeze(input_hr,dim=0)    # add batch dim
+        input_hr = torch.unsqueeze(raw_data, dim=0)  # add channel dim
+        input_hr = torch.unsqueeze(input_hr, dim=0)  # add batch dim
         input_hr.to(device)
-        output_hr=hr_model(input_hr)    # hr data
+        output_hr = hr_model(input_hr)  # hr data
+
+        # 结束记录超分辨率用时
+        end_time_sr = time.time()
+        print(f"超分辨率处理时间: {end_time_sr - start_time_sr:.4f} 秒")
+
+        # 开始记录断层识别用时
+        start_time_fault = time.time()
+
         # 3. get hr fault map
-        fault_hr=fault_model(output_hr.transpose(-1,-2)).cpu()
-        fault_hr=np.squeeze(fault_hr.numpy(), axis=(0, 1))
+        fault_hr = fault_model(output_hr).cpu()
+        fault_hr = np.squeeze(fault_hr.numpy(), axis=(0, 1))
+
+        # 结束记录断层识别用时
+        end_time_fault = time.time()
+        print(f"高分辨率断层识别处理时间: {end_time_fault - start_time_fault:.4f} 秒")
         # 4. save hr data and hr fault map
-        save_h5(data=np.squeeze(output_hr.cpu().numpy(), axis=(0, 1)),path="./hr_seismic.h5")
-        save_h5(data=fault_hr,path="./hr_fault.h5")
+        save_h5(data=np.squeeze(output_hr.cpu().numpy(), axis=(0, 1)).T, path="./hr_seismic.h5")
+        save_h5(data=fault_hr, path="./hr_fault.h5")
 
         # 5. get raw fault map for compare
-        fault_raw=fault_model(input_hr.transpose(-1,-2)).cpu()
+        # 开始记录断层识别用时
+        start_time_fault = time.time()
+        fault_raw = fault_model(input_hr).cpu()
         fault_raw = np.squeeze(fault_raw.numpy(), axis=(0, 1))
+        # 结束记录断层识别用时
+        end_time_fault = time.time()
+        print(f"原始断层识别处理时间: {end_time_fault - start_time_fault:.4f} 秒")
         # 6. save raw fault map
-        save_h5(data=fault_raw,path="./raw_fault.h5")
+        save_h5(data=fault_raw, path="./raw_fault.h5")
 
 def show_result():
     # 1.load data
@@ -126,5 +148,5 @@ def show_result():
 
 if __name__=="__main__":
     main()
-    show_result()
+    # show_result()
 
