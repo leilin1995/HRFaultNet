@@ -39,7 +39,7 @@ You can use this method by following the example in the application.
 If you find this work useful in your research, please consider citing:
 
 ```
-
+Lin, L., Li, C., Kuang, Y.,Xin, X. & Zhong, Z. (2025) Applications of deeplearning-based resolution-enhanced seismic data infault identification. Geophysical Prospecting, 1–20.https://doi.org/10.1111/1365-2478.13664
 ```
 
 BibTex
